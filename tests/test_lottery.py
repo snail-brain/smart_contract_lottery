@@ -1,4 +1,4 @@
-from brownie import Lottery, accounts, config
+from brownie import Lottery, accounts, config, network
 from scripts.helpful_scripts import (
     Forked_Environments,
     getAccount,
@@ -8,4 +8,7 @@ from scripts.helpful_scripts import (
 
 def test_get_entrance_fee():
     account = getAccount()
-    lottery = Lottery.deploy({"from": account})
+    lottery = Lottery.deploy(
+        config["networks"][network.show_active()]["eth_usd_price_feed"],
+        {"from": account},
+    )
