@@ -49,14 +49,8 @@ def end_lottery():
     print(f"{_lottery.recentWinner()} is the winner!")
 
 
-def testing():
-    account = getAccount()
-    _lottery = lottery[-1]
-    print(_lottery.Lottery_State)
-
-
 def main():
     deploy_lottery()
     start_lottery()
     enter_lottery()
-    testing()
+    end_lottery()

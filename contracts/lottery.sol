@@ -7,14 +7,18 @@ import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 
 contract lottery is VRFConsumerBase {
     address payable[] public players;
-    uint256 public usdEntryFee;
-    uint256 public randomness;
-    AggregatorV3Interface internal priceFeed;
     address owner;
     address payable public recentWinner;
-    Lottery_State public lottery_state;
+
+    uint256 public usdEntryFee;
+    uint256 public randomness;
     uint256 public fee;
+
+    AggregatorV3Interface internal priceFeed;
+    Lottery_State public lottery_state;
+
     bytes32 public keyhash;
+    event RequestedRandomness(bytes32 requestId);
 
     enum Lottery_State {
         OPEN,
@@ -63,6 +67,7 @@ contract lottery is VRFConsumerBase {
     function endLottery() public _onlyOwner {
         lottery_state = Lottery_State.CALCULATING_WINNER;
         bytes32 requestId = requestRandomness(keyhash, fee);
+        emit RequestedRandomness(requestId);
     }
 
     function fulfillRandomness(bytes32 _requestId, uint256 _randomness)
